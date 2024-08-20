@@ -31,10 +31,16 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:news_flutter/model/NewsResponse.dart';
 import 'package:news_flutter/model/SourceResponse.dart';
 import 'package:news_flutter/model/api_constents.dart';
 
 class ApiManager {
+
+/* API KEY
+https://newsapi.org/v2/top-headlines/sources?apiKey=762012fc28ed4900838feaf9e6045bb0
+ */
+
   static Future<SourceResponse?> getSources() async {
     try {
       Uri url = Uri.https(APIConstants.baseUrl, APIConstants.sourceAPI, {
@@ -63,4 +69,37 @@ class ApiManager {
       );
     }
   }
+
+/* API KEY
+https://newsapi.org/v2/everything?q=bitcoin&apiKey=762012fc28ed4900838feaf9e6045bb0
+*/
+
+  static Future<NewsResponse?> getNewsBySourceId(String sourceId) async {
+    try {
+      Uri url = Uri.https(APIConstants.baseUrl, APIConstants.newsAPI, {
+        'apiKey': APIConstants.apiKey,
+        'sources': sourceId,
+      });
+
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Decode the JSON response and return the NewsResponse object
+        return NewsResponse.fromJson(jsonDecode(response.body));
+      } else {
+        // Handle errors or unsuccessful responses
+        return NewsResponse(
+          status: 'error',
+          articles: [],
+        );
+      }
+    } catch (e) {
+      // Handle any exceptions or errors
+      return NewsResponse(
+        status: 'error',
+        articles: [],
+      );
+    }
+  }
+
 }
