@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_flutter/model/NewsResponse.dart';
 import 'package:news_flutter/model/SourceResponse.dart';
 import 'package:news_flutter/model/api.dart';
+import 'package:news_flutter/news/news_item.dart';
 
 import '../mytheme/app_colors.dart';
 
@@ -58,7 +59,7 @@ class _NewsWidgetState extends State<NewsWidget> {
           }
           var newList = snapshot.data!.articles! ;
           return ListView.builder(itemBuilder: (context, index){
-            return Text(newList[index].title ?? "");
+            return NewsItem(news: newList[index]);
           },
           itemCount: newList.length,);
         }

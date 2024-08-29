@@ -41,10 +41,11 @@ class ApiManager {
 https://newsapi.org/v2/top-headlines/sources?apiKey=762012fc28ed4900838feaf9e6045bb0
  */
 
-  static Future<SourceResponse?> getSources() async {
+  static Future<SourceResponse?> getSources(String categoryId) async {
     try {
       Uri url = Uri.https(APIConstants.baseUrl, APIConstants.sourceAPI, {
         'apiKey': '762012fc28ed4900838feaf9e6045bb0',
+        'category': categoryId
       });
 
       var response = await http.get(url);
